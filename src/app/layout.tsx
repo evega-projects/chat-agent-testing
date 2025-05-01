@@ -32,35 +32,34 @@ export default function RootLayout({
         />
         <Script
           src="https://c20.live/script/chatbot-embed.js"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="chatbot-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              document.addEventListener('DOMContentLoaded', function() {
+                if (window.initializeChatbot) {
+                  window.initializeChatbot("6813c8b0c5c84206f2e9b3a5");
+                  return;
+                }
+                const checkInitialize = setInterval(function() {
+                  if (window.initializeChatbot) {
+                    window.initializeChatbot("6813c8b0c5c84206f2e9b3a5");
+                    clearInterval(checkInitialize);
+                  }
+                }, 100);
+                setTimeout(() => clearInterval(checkInitialize), 10000);
+              });
+            `,
+          }}
         />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-
-        <Script
-          id="chatbot-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.addEventListener('load', function () {
-                if (window.initializeChatbot) {
-                  window.initializeChatbot("6813cec9f49af4c76d05b234");
-                } else {
-                  const interval = setInterval(function () {
-                    if (window.initializeChatbot) {
-                      window.initializeChatbot("6813cec9f49af4c76d05b234");
-                      clearInterval(interval);
-                    }
-                  }, 200);
-                  setTimeout(() => clearInterval(interval), 10000);
-                }
-              });
-            `,
-          }}
-        />
       </body>
     </html>
   );
