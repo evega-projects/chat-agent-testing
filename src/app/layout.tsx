@@ -25,7 +25,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+
+        {/* ChatAgent scripts (placed before closing </body>) */}
         <Script
           src="https://cdn.tailwindcss.com"
           strategy="beforeInteractive"
@@ -39,27 +44,24 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              document.addEventListener('DOMContentLoaded', function() {
-                if (window.initializeChatbot) {
-                  window.initializeChatbot("6813cec9f49af4c76d05b234");
-                  return;
-                }
-                const checkInitialize = setInterval(function() {
+              if (typeof window !== "undefined") {
+                document.addEventListener('DOMContentLoaded', function() {
                   if (window.initializeChatbot) {
                     window.initializeChatbot("6813cec9f49af4c76d05b234");
-                    clearInterval(checkInitialize);
+                    return;
                   }
-                }, 100);
-                setTimeout(() => clearInterval(checkInitialize), 10000);
-              });
+                  const checkInitialize = setInterval(function() {
+                    if (window.initializeChatbot) {
+                      window.initializeChatbot("6813cec9f49af4c76d05b234");
+                      clearInterval(checkInitialize);
+                    }
+                  }, 100);
+                  setTimeout(() => clearInterval(checkInitialize), 10000);
+                });
+              }
             `,
           }}
         />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
       </body>
     </html>
   );
