@@ -26,40 +26,50 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Tailwind via CDN */}
         <Script
           src="https://cdn.tailwindcss.com"
           strategy="beforeInteractive"
         />
+
+        {/* Chatbot script */}
         <Script
           src="https://c20.live/script/chatbot-embed.js"
-          strategy="afterInteractive"
-        />
-        <Script
-          id="chatbot-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              document.addEventListener('DOMContentLoaded', function() {
-                if (window.initializeChatbot) {
-                  window.initializeChatbot("6813cec9f49af4c76d05b234");
-                  return;
-                }
-                const checkInitialize = setInterval(function() {
-                  if (window.initializeChatbot) {
-                    window.initializeChatbot("6813cec9f49af4c76d05b234");
-                    clearInterval(checkInitialize);
-                  }
-                }, 100);
-                setTimeout(() => clearInterval(checkInitialize), 10000);
-              });
-            `,
-          }}
+          strategy="beforeInteractive"
         />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+
+        {/* Chatbot Initialization */}
+        <Script
+          id="chatbot-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.addEventListener('load', function () {
+                console.log("[Chatbot] Waiting for initializeChatbot...");
+                const chatbotId = "6813cec9f49af4c76d05b234";
+                let tries = 0;
+                const maxTries = 50;
+
+                const interval = setInterval(() => {
+                  tries++;
+                  if (typeof window.initializeChatbot === "function") {
+                    console.log("[Chatbot] Initializing...");
+                    window.initializeChatbot(chatbotId);
+                    clearInterval(interval);
+                  } else if (tries >= maxTries) {
+                    console.warn("[Chatbot] Initialization timed out.");
+                    clearInterval(interval);
+                  }
+                }, 200);
+              });
+            `,
+          }}
+        />
       </body>
     </html>
   );
