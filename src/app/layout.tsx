@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,6 +25,37 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          src="https://cdn.tailwindcss.com"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="https://c20.live/script/chatbot-embed.js"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="chatbot-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              document.addEventListener('DOMContentLoaded', function() {
+                if (window.initializeChatbot) {
+                  window.initializeChatbot("6813c8b0c5c84206f2e9b3a5");
+                  return;
+                }
+                const checkInitialize = setInterval(function() {
+                  if (window.initializeChatbot) {
+                    window.initializeChatbot("6813c8b0c5c84206f2e9b3a5");
+                    clearInterval(checkInitialize);
+                  }
+                }, 100);
+                setTimeout(() => clearInterval(checkInitialize), 10000);
+              });
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
