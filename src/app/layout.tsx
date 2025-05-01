@@ -25,40 +25,39 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-
-        {/* ChatAgent scripts (placed before closing </body>) */}
+      <head>
         <Script
           src="https://cdn.tailwindcss.com"
           strategy="beforeInteractive"
         />
         <Script
           src="https://c20.live/script/chatbot-embed.js"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+
         <Script
           id="chatbot-init"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              if (typeof window !== "undefined") {
-                document.addEventListener('DOMContentLoaded', function() {
-                  if (window.initializeChatbot) {
-                    window.initializeChatbot("6813cec9f49af4c76d05b234");
-                    return;
-                  }
-                  const checkInitialize = setInterval(function() {
+              window.addEventListener('load', function () {
+                if (window.initializeChatbot) {
+                  window.initializeChatbot("6813cec9f49af4c76d05b234");
+                } else {
+                  const interval = setInterval(function () {
                     if (window.initializeChatbot) {
                       window.initializeChatbot("6813cec9f49af4c76d05b234");
-                      clearInterval(checkInitialize);
+                      clearInterval(interval);
                     }
-                  }, 100);
-                  setTimeout(() => clearInterval(checkInitialize), 10000);
-                });
-              }
+                  }, 200);
+                  setTimeout(() => clearInterval(interval), 10000);
+                }
+              });
             `,
           }}
         />
