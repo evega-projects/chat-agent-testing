@@ -28,21 +28,18 @@ export default function RootLayout({
       <head>
         <script defer src="https://cdn.tailwindcss.com"></script>
         <script defer src="https://c20.live/script/chatbot-embed.js"></script>
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-500`}
-      >
         <script
+          defer
           dangerouslySetInnerHTML={{
             __html: `
               document.addEventListener('DOMContentLoaded', function() {
                 if (window.initializeChatbot) {
-                  window.initializeChatbot("6813cec9f49af4c76d05b234");
+                  window.initializeChatbot("681e54d0506831086587f5c6");
                   return;
                 }
                 const checkInitialize = setInterval(function() {
                   if (window.initializeChatbot) {
-                    window.initializeChatbot("6813cec9f49af4c76d05b234");
+                    window.initializeChatbot("681e54d0506831086587f5c6");
                     clearInterval(checkInitialize);
                   }
                 }, 100);
@@ -51,6 +48,11 @@ export default function RootLayout({
             `,
           }}
         />
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-500`}
+      >
+        {children}
       </body>
     </html>
   );
