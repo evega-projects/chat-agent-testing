@@ -26,12 +26,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <title>Welcome ChatAgent!</title>
         <script defer src="https://cdn.tailwindcss.com"></script>
         <script defer src="https://c20.live/script/chatbot-embed.js"></script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-500`}
       >
+        {children}
         <script
           dangerouslySetInnerHTML={{
             __html: `
