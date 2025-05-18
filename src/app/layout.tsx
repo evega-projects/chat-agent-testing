@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,8 +28,12 @@ export default function RootLayout({
       <head>
         <script defer src="https://cdn.tailwindcss.com"></script>
         <script defer src="https://c20.live/script/chatbot-embed.js"></script>
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-500`}
+      >
+        {children}
         <script
-          defer
           dangerouslySetInnerHTML={{
             __html: `
               document.addEventListener('DOMContentLoaded', function() {
@@ -47,11 +52,6 @@ export default function RootLayout({
             `,
           }}
         />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-500`}
-      >
-        {children}
       </body>
     </html>
   );
