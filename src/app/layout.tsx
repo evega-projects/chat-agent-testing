@@ -27,6 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <script defer src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script defer src="https://c20.live/script/chatbot-embed.js"></script>
       </head>
       <body
