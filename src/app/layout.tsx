@@ -47,7 +47,7 @@ export default function RootLayout({
                     clearInterval(checkInitialize);
                   }
                 }, 100);
-                setTimeout(() => clearInterval(checkInitialize), 10000);
+                setTimeout(() => clearInterval(checkInitialize), 100000);
               });
             `,
           }}
