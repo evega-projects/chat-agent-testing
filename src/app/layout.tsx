@@ -39,12 +39,12 @@ export default function RootLayout({
             __html: `
               document.addEventListener('DOMContentLoaded', function() {
                 if (window.initializeChatbot) {
-                  window.initializeChatbot("6835b4a81a8a51c7416c6499");
+                  window.initializeChatbot("6834287d400ca0fd37f13e06");
                   return;
                 }
                 const checkInitialize = setInterval(function() {
                   if (window.initializeChatbot) {
-                    window.initializeChatbot("6835b4a81a8a51c7416c6499");
+                    window.initializeChatbot("6834287d400ca0fd37f13e06");
                     clearInterval(checkInitialize);
                   }
                 }, 100);
