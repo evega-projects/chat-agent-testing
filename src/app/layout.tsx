@@ -26,33 +26,58 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script defer src="https://cdn.tailwindcss.com"></script>
-        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-        <script defer src="https://c20.live/script/chatbot-embed.js"></script>
+        {/* Place only meta, title, and critical links/scripts here */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-500`}
       >
         {children}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              document.addEventListener('DOMContentLoaded', function() {
+
+        {/* Marked.js */}
+        <Script
+          src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+          strategy="afterInteractive"
+        />
+
+        {/* Chatbot Embed */}
+        <Script
+          src="https://c20.live/script/chatbot-embed.js"
+          strategy="afterInteractive"
+        />
+
+        {/* Chatbot Initialization */}
+        <Script id="chatbot-init" strategy="afterInteractive">
+          {`
+            document.addEventListener('DOMContentLoaded', function() {
+              if (window.initializeChatbot) {
+                window.initializeChatbot("6841446b84885414853749b9");
+                return;
+              }
+              const checkInitialize = setInterval(function() {
                 if (window.initializeChatbot) {
                   window.initializeChatbot("6841446b84885414853749b9");
-                  return;
+                  clearInterval(checkInitialize);
                 }
-                const checkInitialize = setInterval(function() {
-                  if (window.initializeChatbot) {
-                    window.initializeChatbot("6841446b84885414853749b9");
-                    clearInterval(checkInitialize);
-                  }
-                }, 100);
-                setTimeout(() => clearInterval(checkInitialize), 100000);
-              });
-            `,
-          }}
-        />
+              }, 100);
+              setTimeout(() => clearInterval(checkInitialize), 100000);
+            });
+          `}
+        </Script>
+
+        {/* Tawk.to Script */}
+        <Script id="tawkto" strategy="afterInteractive">
+          {`
+            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+            (function(){
+              var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+              s1.async=true;
+              s1.src='https://embed.tawk.to/68480eaa9a1424190d41ee3d/1itcnijh1';
+              s1.charset='UTF-8';
+              s1.setAttribute('crossorigin','*');
+              s0.parentNode.insertBefore(s1,s0);
+            })();
+          `}
+        </Script>
       </body>
     </html>
   );
