@@ -32,27 +32,33 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-500`}
       >
         {children}
-        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-        <script defer src="https://c20.live/script/chatbot-embed.js"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              document.addEventListener('DOMContentLoaded', function() {
-                if (window.initializeChatbot) {
-                  window.initializeChatbot("6841446b84885414853749b9");
-                  return;
-                }
-                const checkInitialize = setInterval(function() {
-                  if (window.initializeChatbot) {
-                    window.initializeChatbot("6841446b84885414853749b9");
-                    clearInterval(checkInitialize);
-                  }
-                }, 100);
-                setTimeout(() => clearInterval(checkInitialize), 100000);
-              });
-            `,
-          }}
+        <Script
+          src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+          strategy="beforeInteractive"
         />
+        <Script
+          src="https://c20.live/script/chatbot-embed.js"
+          strategy="afterInteractive"
+        />
+        <Script id="chatbot-init" strategy="afterInteractive">
+          {`
+      document.addEventListener('DOMContentLoaded', function () {
+        if (window.initializeChatbot) {
+          window.initializeChatbot("6846b28dd99fd94644626069");
+          return;
+        }
+
+        const checkInitialize = setInterval(function () {
+          if (window.initializeChatbot) {
+            window.initializeChatbot("6846b28dd99fd94644626069");
+            clearInterval(checkInitialize);
+          }
+        }, 100);
+
+        setTimeout(() => clearInterval(checkInitialize), 10000);
+      });
+    `}
+        </Script>
       </body>
     </html>
   );
