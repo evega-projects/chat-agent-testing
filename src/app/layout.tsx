@@ -46,7 +46,7 @@ export default function RootLayout({
           {`
             (function initChatbot() {
               if (window.initializeChatbot) {
-                window.initializeChatbot("6846b28dd99fd94644626069");
+                window.initializeChatbot("6841446b84885414853749b9");
                 return;
               }
 
@@ -54,7 +54,7 @@ export default function RootLayout({
               const maxRetries = 100; // 100 x 100ms = 10s
               const interval = setInterval(() => {
                 if (window.initializeChatbot) {
-                  window.initializeChatbot("6846b28dd99fd94644626069");
+                  window.initializeChatbot("6841446b84885414853749b9");
                   clearInterval(interval);
                 } else if (++retries >= maxRetries) {
                   clearInterval(interval);
