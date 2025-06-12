@@ -27,13 +27,13 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* <script defer src="https://cdn.tailwindcss.com"></script> */}
-        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-        <script defer src="https://c20.live/script/chatbot-embed.js"></script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-500`}
       >
         {children}
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script defer src="https://c20.live/script/chatbot-embed.js"></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
