@@ -23,42 +23,34 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head />
-      <body className={`${poppins.variable} antialiased bg-gray-500`}>
+      <body>
         {children}
 
-        {/* Load dependencies */}
-        <Script
+        <script
+          defer
           src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
-          strategy="beforeInteractive"
+        ></script>
+        <script defer src="https://c20.live/script/chatbot-embed.js"></script>
+        <script
+          defer
+          dangerouslySetInnerHTML={{
+            __html: `
+        document.addEventListener('DOMContentLoaded', function() {
+          if (window.initializeChatbot) {
+            window.initializeChatbot("6841446b84885414853749b9");
+            return;
+          }
+          const checkInitialize = setInterval(function() {
+            if (window.initializeChatbot) {
+              window.initializeChatbot("6841446b84885414853749b9");
+              clearInterval(checkInitialize);
+            }
+          }, 100);
+          setTimeout(() => clearInterval(checkInitialize), 10000);
+        });
+      `,
+          }}
         />
-        <Script
-          src="https://c20.live/script/chatbot-embed.js"
-          strategy="afterInteractive"
-        />
-
-        {/* Initialize chatbot after scripts are ready */}
-        <Script id="chatbot-init" strategy="afterInteractive">
-          {`
-            (function initChatbot() {
-              if (window.initializeChatbot) {
-                window.initializeChatbot("6841446b84885414853749b9");
-                return;
-              }
-
-              let retries = 0;
-              const maxRetries = 100; // 100 x 100ms = 10s
-              const interval = setInterval(() => {
-                if (window.initializeChatbot) {
-                  window.initializeChatbot("6841446b84885414853749b9");
-                  clearInterval(interval);
-                } else if (++retries >= maxRetries) {
-                  clearInterval(interval);
-                  console.warn("Chatbot failed to initialize after 10s.");
-                }
-              }, 100);
-            })();
-          `}
-        </Script>
       </body>
     </html>
   );
