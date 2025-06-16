@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 // Load Poppins font
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"], // optional: adjust based on your usage
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -20,9 +21,48 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={poppins.variable}>
       <head />
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Chatbot Embed Scripts */}
+        <Script
+          src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+          strategy="afterInteractive"
+        />
+        <Script
+          src="https://c20.live/script/chatbot-embed.js"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="chatbot-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(botId) {
+                function init() {
+                  if (window.initializeChatbot) {
+                    window.initializeChatbot(botId);
+                    return;
+                  }
+                  var check = setInterval(function() {
+                    if (window.initializeChatbot) {
+                      window.initializeChatbot(botId);
+                      clearInterval(check);
+                    }
+                  }, 100);
+                  setTimeout(function() { clearInterval(check); }, 10000);
+                }
+                if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                  init();
+                } else {
+                  document.addEventListener('DOMContentLoaded', init);
+                }
+              })('6841446b84885414853749b9');
+            `,
+          }}
+        />
+      </body>
     </html>
   );
 }
