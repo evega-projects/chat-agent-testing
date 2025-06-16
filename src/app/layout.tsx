@@ -17,47 +17,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
-      <head>
-        {/* Load marked.js */}
-        <Script
-          src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
-          strategy="afterInteractive"
-        />
+      <head />
+      <body>
+        {children}
 
-        {/* Load chatbot script and initialize */}
-        <Script id="chatbot-loader" strategy="afterInteractive">
-          {`
-            (function () {
-              const botId = "6841446b84885414853749b9";
-              const chatbotScript = document.createElement("script");
-              chatbotScript.src = "https://c20.live/script/chatbot-embed.js";
-              chatbotScript.defer = true;
-              chatbotScript.onload = function () {
-                if (window.initializeChatbot) {
-                  window.initializeChatbot(botId);
-                  return;
-                }
-
-                const checkInitialize = setInterval(function () {
-                  if (window.initializeChatbot) {
-                    window.initializeChatbot(botId);
-                    clearInterval(checkInitialize);
-                  }
-                }, 100);
-
-                setTimeout(() => clearInterval(checkInitialize), 10000);
-              };
-              document.head.appendChild(chatbotScript);
-            })();
-          `}
-        </Script>
-      </head>
-      <body>{children}</body>
+        <script
+          defer
+          src="https://c20.live/embed.js"
+          data-bot-id="6841446b84885414853749b9"
+        ></script>
+      </body>
     </html>
   );
 }
