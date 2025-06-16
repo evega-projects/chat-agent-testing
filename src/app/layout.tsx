@@ -3,17 +3,11 @@ import { Poppins } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-// Extend window type to avoid TS error
-declare global {
-  interface Window {
-    initializeChatbot?: (botId: string) => void;
-  }
-}
-
+// Load Poppins font
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"], // optional: adjust based on your usage
 });
 
 export const metadata: Metadata = {
@@ -26,41 +20,35 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const BOT_ID = "6847eb146584ec5f07dd2b04";
-
   return (
-    <html lang="en" className={poppins.variable}>
+    <html lang="en">
       <head />
       <body>
         {children}
 
-        {/* Load marked.js if needed */}
-        <Script
+        <script
+          defer
           src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
-          strategy="afterInteractive"
-        />
-
-        {/* Load chatbot script and initialize after load */}
-        <Script
-          src="https://c20.live/script/chatbot-embed.js"
-          strategy="afterInteractive"
-          onLoad={() => {
-            if (typeof window !== "undefined") {
-              const initialize = () => {
-                if (window.initializeChatbot) {
-                  window.initializeChatbot(BOT_ID);
-                  return true;
-                }
-                return false;
-              };
-
-              if (!initialize()) {
-                const interval = setInterval(() => {
-                  if (initialize()) clearInterval(interval);
-                }, 100);
-                setTimeout(() => clearInterval(interval), 10000);
-              }
+        ></script>
+        <script defer src="https://c20.live/script/chatbot-embed.js"></script>
+        <script
+          defer
+          dangerouslySetInnerHTML={{
+            __html: `
+        document.addEventListener('DOMContentLoaded', function() {
+          if (window.initializeChatbot) {
+            window.initializeChatbot("6841446b84885414853749b9");
+            return;
+          }
+          const checkInitialize = setInterval(function() {
+            if (window.initializeChatbot) {
+              window.initializeChatbot("6841446b84885414853749b9");
+              clearInterval(checkInitialize);
             }
+          }, 100);
+          setTimeout(() => clearInterval(checkInitialize), 10000);
+        });
+      `,
           }}
         />
       </body>
