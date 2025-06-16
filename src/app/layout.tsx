@@ -7,7 +7,7 @@ import "./globals.css";
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"], // optional: adjust based on your usage
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -21,36 +21,43 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={poppins.variable}>
       <head />
       <body>
         {children}
 
-        <script
-          defer
+        {/* External dependencies */}
+        <Script
           src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
-        ></script>
-        <script defer src="https://c20.live/script/chatbot-embed.js"></script>
-        <script
-          defer
-          dangerouslySetInnerHTML={{
-            __html: `
-        document.addEventListener('DOMContentLoaded', function() {
-          if (window.initializeChatbot) {
-            window.initializeChatbot("6841446b84885414853749b9");
-            return;
-          }
-          const checkInitialize = setInterval(function() {
-            if (window.initializeChatbot) {
-              window.initializeChatbot("6841446b84885414853749b9");
-              clearInterval(checkInitialize);
-            }
-          }, 100);
-          setTimeout(() => clearInterval(checkInitialize), 10000);
-        });
-      `,
-          }}
+          strategy="afterInteractive"
         />
+        <Script
+          src="https://c20.live/script/chatbot-embed.js"
+          strategy="afterInteractive"
+        />
+
+        {/* Inline initialization script */}
+        <Script id="chatbot-init" strategy="afterInteractive">
+          {`
+            (function () {
+              const BOT_ID = "6841446b84885414853749b9";
+              function initialize() {
+                if (window.initializeChatbot) {
+                  window.initializeChatbot(BOT_ID);
+                  return true;
+                }
+                return false;
+              }
+              document.addEventListener("DOMContentLoaded", function () {
+                if (initialize()) return;
+                const interval = setInterval(() => {
+                  if (initialize()) clearInterval(interval);
+                }, 100);
+                setTimeout(() => clearInterval(interval), 10000);
+              });
+            })();
+          `}
+        </Script>
       </body>
     </html>
   );
