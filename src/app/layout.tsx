@@ -28,9 +28,29 @@ export default function RootLayout({
 
         <script
           defer
-          src="https://c20.live/embed.js"
-          data-bot-id="6841446b84885414853749b9"
+          src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
         ></script>
+        <script defer src="https://c20.live/script/chatbot-embed.js"></script>
+        <script
+          defer
+          dangerouslySetInnerHTML={{
+            __html: `
+        document.addEventListener('DOMContentLoaded', function() {
+          if (window.initializeChatbot) {
+            window.initializeChatbot("6841446b84885414853749b9");
+            return;
+          }
+          const checkInitialize = setInterval(function() {
+            if (window.initializeChatbot) {
+              window.initializeChatbot("6841446b84885414853749b9");
+              clearInterval(checkInitialize);
+            }
+          }, 100);
+          setTimeout(() => clearInterval(checkInitialize), 10000);
+        });
+      `,
+          }}
+        />
       </body>
     </html>
   );
