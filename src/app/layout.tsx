@@ -3,7 +3,13 @@ import { Poppins } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-// Load Poppins font
+// Extend window type to avoid TS error
+declare global {
+  interface Window {
+    initializeChatbot?: (botId: string) => void;
+  }
+}
+
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
@@ -20,50 +26,43 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const BOT_ID = "6847eb146584ec5f07dd2b04";
+
   return (
     <html lang="en" className={poppins.variable}>
       <head />
       <body>
         {children}
 
-        {/* Load marked.js (optional, if chatbot uses markdown) */}
+        {/* Load marked.js if needed */}
         <Script
           src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
           strategy="afterInteractive"
         />
 
-        {/* Load chatbot embed script */}
+        {/* Load chatbot script and initialize after load */}
         <Script
           src="https://c20.live/script/chatbot-embed.js"
           strategy="afterInteractive"
-        />
-
-        {/* Initialize chatbot once it's available */}
-        <Script id="chatbot-init" strategy="afterInteractive">
-          {`
-            (function () {
-              const BOT_ID = "6841446b84885414853749b9";
-
-              function initialize() {
+          onLoad={() => {
+            if (typeof window !== "undefined") {
+              const initialize = () => {
                 if (window.initializeChatbot) {
                   window.initializeChatbot(BOT_ID);
                   return true;
                 }
                 return false;
-              }
+              };
 
-              document.addEventListener("DOMContentLoaded", function () {
-                if (initialize()) return;
-
+              if (!initialize()) {
                 const interval = setInterval(() => {
                   if (initialize()) clearInterval(interval);
                 }, 100);
-
                 setTimeout(() => clearInterval(interval), 10000);
-              });
-            })();
-          `}
-        </Script>
+              }
+            }
+          }}
+        />
       </body>
     </html>
   );
