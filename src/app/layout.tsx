@@ -33,7 +33,7 @@ export default function RootLayout({
         <Script id="chatbot-loader" strategy="afterInteractive">
           {`
             (function () {
-              const botId = "6847eb146584ec5f07dd2b04";
+              const botId = "6841446b84885414853749b9";
               const chatbotScript = document.createElement("script");
               chatbotScript.src = "https://c20.live/script/chatbot-embed.js";
               chatbotScript.defer = true;
