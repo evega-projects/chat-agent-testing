@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 
 // Load Poppins font
@@ -23,35 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head />
-      <body>
-        {children}
-
-        <script
-          defer
-          src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
-        ></script>
-        <script defer src="https://c20.live/script/chatbot-embed.js"></script>
-        <script
-          defer
-          dangerouslySetInnerHTML={{
-            __html: `
-        document.addEventListener('DOMContentLoaded', function() {
-          if (window.initializeChatbot) {
-            window.initializeChatbot("6841446b84885414853749b9");
-            return;
-          }
-          const checkInitialize = setInterval(function() {
-            if (window.initializeChatbot) {
-              window.initializeChatbot("6841446b84885414853749b9");
-              clearInterval(checkInitialize);
-            }
-          }, 100);
-          setTimeout(() => clearInterval(checkInitialize), 10000);
-        });
-      `,
-          }}
-        />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
