@@ -26,21 +26,24 @@ export default function RootLayout({
       <body>
         {children}
 
-        {/* External dependencies */}
+        {/* Load marked.js (optional, if chatbot uses markdown) */}
         <Script
           src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
           strategy="afterInteractive"
         />
+
+        {/* Load chatbot embed script */}
         <Script
           src="https://c20.live/script/chatbot-embed.js"
           strategy="afterInteractive"
         />
 
-        {/* Inline initialization script */}
+        {/* Initialize chatbot once it's available */}
         <Script id="chatbot-init" strategy="afterInteractive">
           {`
             (function () {
               const BOT_ID = "6841446b84885414853749b9";
+
               function initialize() {
                 if (window.initializeChatbot) {
                   window.initializeChatbot(BOT_ID);
@@ -48,11 +51,14 @@ export default function RootLayout({
                 }
                 return false;
               }
+
               document.addEventListener("DOMContentLoaded", function () {
                 if (initialize()) return;
+
                 const interval = setInterval(() => {
                   if (initialize()) clearInterval(interval);
                 }, 100);
+
                 setTimeout(() => clearInterval(interval), 10000);
               });
             })();
