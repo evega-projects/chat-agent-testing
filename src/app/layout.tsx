@@ -31,27 +31,27 @@ export default function RootLayout({
           id="chatbot-init"
           dangerouslySetInnerHTML={{
             __html: `
-              (function(botId) {
-                function init() {
-                  if (window.initializeChatbot) {
-                    window.initializeChatbot(botId);
-                    return;
-                  }
-                  var check = setInterval(function() {
-                    if (window.initializeChatbot) {
-                      window.initializeChatbot(botId);
-                      clearInterval(check);
-                    }
-                  }, 100);
-                  setTimeout(function() { clearInterval(check); }, 10000);
-                }
-                if (document.readyState === 'complete' || document.readyState === 'interactive') {
-                  init();
-                } else {
-                  document.addEventListener('DOMContentLoaded', init);
-                }
-              })('6841446b84885414853749b9');
-            `,
+      (function(botId) {
+        function init() {
+          if (window.initializeChatbot) {
+            window.initializeChatbot(botId);
+            return;
+          }
+          var check = setInterval(function() {
+            if (window.initializeChatbot) {
+              window.initializeChatbot(botId);
+              clearInterval(check);
+            }
+          }, 100);
+          setTimeout(function() { clearInterval(check); }, 10000);
+        }
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+          init();
+        } else {
+          document.addEventListener('DOMContentLoaded', init);
+        }
+      })('6841446b84885414853749b9');
+    `,
           }}
         />
       </body>
