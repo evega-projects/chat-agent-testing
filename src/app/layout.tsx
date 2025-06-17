@@ -50,7 +50,7 @@ export default function RootLayout({
         } else {
           document.addEventListener('DOMContentLoaded', init);
         }
-      })('6841446b84885414853749b9');
+      })('68510d96606685ed49fdb215');
     `,
           }}
         />
