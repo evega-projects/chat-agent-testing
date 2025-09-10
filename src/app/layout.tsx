@@ -26,7 +26,7 @@ export default function RootLayout({
         {children}
         {/* Chatbot Embed Scripts */}
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" />
-        <script src="https://c20.live/script/chatbot-embed.js" />
+        <script src="https://product-logs.com/script/chatbot-embed.js" />
         <script
           id="chatbot-init"
           dangerouslySetInnerHTML={{
@@ -50,7 +50,7 @@ export default function RootLayout({
         } else {
           document.addEventListener('DOMContentLoaded', init);
         }
-      })('6841446b84885414853749b9');
+      })('68c1a8878956d0ba7e38beae');
     `,
           }}
         />
